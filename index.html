@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />
+              <title>Integer Point Plotter</title>
+                  <link rel="stylesheet" href="css/styles.css" />
+                    </head>
+                      <body>
+                          <main class="container">
+                                <h1>Integer Point Plotter</h1>
+                                
+                                      <section class="controls">
+                                        <div class="instructions">Click (or touch) and drag on the canvas to move the preview point; release to place an integer point. The point will snap to the nearest integer coordinate.</div>
+                                        <button id="clearBtn">Clear</button>
+                                  <div id="message" role="status" aria-live="polite"></div>
+                                  <div id="coord" class="coord-display" aria-live="polite">Coordinate: —</div>
+                                  <button id="startQuizBtn">Start Quiz</button>
+                                  <div id="quizTarget" class="quiz-target">Target: —</div>
+                                  <div id="score" class="coord-display">Score: 0</div>
+                                      </section>
+                                                                                    
+                                                                                          <section class="canvas-wrap">
+                                                                                                  <canvas id="graph" width="600" height="600" aria-label="Cartesian plane"></canvas>
+                                                                                                        </section>
+                                                                                                        
+                                                                                                              <p class="note">Axes range: -10 to 10 on both X and Y. Only integers are accepted; floating-point numbers are rejected.</p>
+                                                                                                                  </main>
+                                                                                                                  
+                                                                                                                      <script src="js/app.js" defer></script>
+  
+                                                                                                                    <!-- result modal -->
+                                                                                                                    <div id="resultModal" class="modal" aria-hidden="true">
+                                                                                                                      <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="resultPhrase">
+                                                                                                                        <h2 id="resultPhrase">Results</h2>
+                                                                                                                        <p id="finalScore">Final score: 0/10</p>
+                                                                                                                        <div class="modal-actions">
+                                                                                                                          <button id="restartModal">Restart Quiz</button>
+                                                                                                                          <button id="closeModal">Close</button>
+                                                                                                                        </div>
+                                                                                                                      </div>
+                                                                                                                    </div>
+                                                                                                                        </body>
+                                                                                                                        </html>
+                                                                                                                        >
