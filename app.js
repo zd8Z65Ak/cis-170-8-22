@@ -117,6 +117,7 @@ let quizActive = false;
 let currentTarget = null; // {x,y}
 let score = 0;
 let questionNumber = 0;
+let answeredCount = 0;
 
 function canvasToCartesian(px, py) {
   // px,py are canvas pixels -> convert to cartesian floats
@@ -148,10 +149,17 @@ canvas.addEventListener('pointermove', (ev) => {
   const sx = snapToInteger(x);
   const sy = snapToInteger(y);
 
-  // update preview regardless of pointerdown so user sees snapping while hovering
+  // update preview/coords only when quiz is not active
   drawGrid();
-  drawPreview(sx, sy);
-  updateCoordDisplay(sx, sy);
+  if (!quizActive) {
+    // show preview and live coords when not quizzing
+    drawPreview(sx, sy);
+    updateCoordDisplay(sx, sy);
+  } else {
+    // during a quiz, do NOT show live coordinates or preview to avoid giving away the answer
+    // leave coord display blank/dash until the user places a point
+    coordDisplay.textContent = `Coordinate: \u2014`;
+  }
 
   lastPreview = {x: sx, y: sy};
 });
@@ -182,13 +190,16 @@ canvas.addEventListener('pointerup', (ev) => {
     scoreDisplay.textContent = `Score: ${score}`;
     // advance to next question or finish
     currentTarget = null;
-    questionNumber += 1;
-    if (questionNumber > TOTAL_QUESTIONS) {
-  quizActive = false;
-  quizTarget.textContent = `Quiz finished — final score: ${score}/${TOTAL_QUESTIONS}`;
-  message.textContent += ' Quiz complete.';
-  endQuizAndShowModal();
+    answeredCount += 1;
+    if (answeredCount >= TOTAL_QUESTIONS) {
+      // quiz complete — show results immediately
+      quizActive = false;
+      quizTarget.textContent = `Quiz finished — final score: ${score}/${TOTAL_QUESTIONS}`;
+      message.textContent += ' Quiz complete.';
+      endQuizAndShowModal();
     } else {
+      // prepare next question
+      questionNumber = answeredCount + 1;
       spawnNewTarget();
     }
   }
@@ -198,8 +209,12 @@ startQuizBtn.addEventListener('click', () => {
   quizActive = true;
   score = 0;
   questionNumber = 1;
+  answeredCount = 0;
   scoreDisplay.textContent = `Score: ${score}`;
   message.textContent = 'Quiz started: plot the shown target by clicking and releasing on the canvas.';
+  // hide live coordinate/preview immediately when quiz starts
+  coordDisplay.textContent = `Coordinate: \u2014`;
+  drawGrid();
   spawnNewTarget();
 });
 
